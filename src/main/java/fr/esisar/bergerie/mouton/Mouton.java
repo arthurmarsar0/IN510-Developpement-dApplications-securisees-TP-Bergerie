@@ -18,6 +18,6 @@ public class Mouton extends PanacheEntity {
     @Column(nullable = false)
     public LocalDate dateNaissance;
     
-    @OneToOne(nullable = true)
+    @OneToOne
     public Cloche cloche;
 }

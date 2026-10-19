@@ -122,7 +122,7 @@ public class MoutonResource{
 	}
 	
 	@PUT
-	@Path("{moutonId}/cloche/{clocheId}")
+	@Path("/{moutonId}/cloche/{clocheId}")
 	@Transactional
 	public Response associateCloche(@PathParam("moutonId") Long moutonId, 
 									@PathParam("clocheId") Long clocheId) {
@@ -139,7 +139,7 @@ public class MoutonResource{
 	}
 	
 	@DELETE
-	@Path("/{moutonID}/cloche")
+	@Path("/{moutonId}/cloche")
 	@Transactional
 	public Response removeCloche(@PathParam("moutonId") Long moutonId) {
 		
