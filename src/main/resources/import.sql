@@ -13,3 +13,6 @@ VALUES (nextval('Cloche_SEQ'));
 
 INSERT INTO Cloche(id)
 VALUES (nextval('Cloche_SEQ'));
+
+INSERT INTO Cloche(id)
+VALUES (nextval('Cloche_SEQ'));
