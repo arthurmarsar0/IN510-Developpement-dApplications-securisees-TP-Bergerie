@@ -1,62 +1,48 @@
-# bergerie
+# Bergerie Management API
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Backend application developed with **Java and Quarkus** as part of the IN510 course at Grenoble INP – Esisar.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+The project models and exposes a REST API for managing a sheepfold (*bergerie*), including sheep, bells, enclosures and shepherd dogs.
 
-## Running the application in dev mode
+The main goal is to practice backend application design with persistence, REST services, DTOs, object mapping and API documentation.
 
-You can run your application in dev mode that enables live coding using:
+## Features
 
-```shell script
-./mvnw quarkus:dev
-```
+- Sheep management through a REST API
+- Retrieve all sheep or a sheep by identifier
+- Filter sheep born after a given date
+- Create, partially update and delete sheep
+- Persistence with Hibernate ORM and Panache
+- Data validation with Hibernate Validator
+- DTO ↔ Entity mapping with MapStruct
+- JSON serialization with Jackson
+- API exploration and testing through Swagger UI
+- H2 in-memory database for development
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+Further domain relationships are progressively introduced:
+- Sheep ↔ Bell
+- Sheep ↔ Enclosure
+- Sheep ↔ Shepherd dogs
 
-## Packaging and running the application
+## Tech Stack
 
-The application can be packaged using:
+- Java
+- Quarkus
+- Maven
+- Jakarta REST
+- Hibernate ORM with Panache
+- Hibernate Validator
+- H2 Database
+- MapStruct
+- Jackson
+- OpenAPI / Swagger
 
-```shell script
-./mvnw package
-```
+## Project Structure
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/bergerie-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+```text
+src/main/java/fr/esisar/bergerie/
+└── mouton/
+    ├── Mouton.java
+    ├── MoutonResource.java
+    ├── MoutonMapper.java
+    └── DTOs
