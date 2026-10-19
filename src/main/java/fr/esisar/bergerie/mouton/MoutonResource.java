@@ -9,14 +9,16 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+
+import fr.esisar.bergerie.cloche.*;
 
 @Path("/moutons")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -87,6 +89,68 @@ public class MoutonResource{
 		if (mouton == null) return Response.status(Status.NOT_FOUND).build();
 		
 		mouton.delete();
+		
+		return Response.noContent().build();
+		
+	}
+	
+	// CLOCHE MANAGER -- Q3.1
+	
+	@Inject
+	ClocheMapper clocheMapper;
+	
+	@GET
+	@Path("/sans-cloche")
+	public Response getMoutonsWithoutCloche() {
+		List<Mouton> moutons = Mouton.list("cloche is null");
+		
+		List<MoutonResponseDTO> result = moutons.stream().map(moutonMapper :: toResponseDTO).toList();
+	
+		return Response.ok(result).build();
+		
+	}
+	
+	@GET
+	@Path("/{moutonId}/cloche")
+	public Response getClocheByMouton(@PathParam("moutonId") Long moutonId) {
+		
+		Mouton mouton = Mouton.findById(moutonId);
+		if(mouton == null) return Response.status(Status.NOT_FOUND).build();
+		if(mouton.cloche == null) return Response.status(Status.NOT_FOUND).build();
+		
+		return Response.ok(clocheMapper.toResponseDTO(mouton.cloche)).build();
+	}
+	
+	@PUT
+	@Path("{moutonId}/cloche/{clocheId}")
+	@Transactional
+	public Response associateCloche(@PathParam("moutonId") Long moutonId, 
+									@PathParam("clocheId") Long clocheId) {
+		
+		Mouton mouton = Mouton.findById(moutonId);
+		Cloche cloche = Cloche.findById(clocheId);
+		
+		if(mouton == null || cloche == null) return Response.status(Status.NOT_FOUND).build();
+		
+		mouton.cloche = cloche;
+		cloche.mouton = mouton;
+		
+		return Response.ok().build();
+	}
+	
+	@DELETE
+	@Path("/{moutonID}/cloche")
+	@Transactional
+	public Response removeCloche(@PathParam("moutonId") Long moutonId) {
+		
+		Mouton mouton = Mouton.findById(moutonId);
+		if(mouton == null) return Response.status(Status.NOT_FOUND).build();
+		if(mouton.cloche == null) return Response.noContent().build();
+		
+		Cloche cloche = mouton.cloche;
+		
+		mouton.cloche = null;
+		cloche.mouton = null;
 		
 		return Response.noContent().build();
 		
